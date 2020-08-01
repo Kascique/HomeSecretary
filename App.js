@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { DefaultTheme, Provider as PaperProvider, Button } from 'react-native-paper';
 import { StyleSheet, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -83,7 +83,18 @@ export default function Main(){
                           {/** If user is logged in */}
                           <Stack.Screen 
                             name="User" 
-                            component={userScreen}/>
+                            component={userScreen}
+                            options={({ navigation }) => ({
+                              headerRight: () => (
+                                <Button
+                                  color="#fff"
+                                  onPress={() => {
+
+                                  }}>
+                                  Log Out
+                                </Button>
+                              )
+                            })}/>
                         </>
                       ) : (
                         <>

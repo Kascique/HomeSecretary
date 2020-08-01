@@ -4,25 +4,7 @@ import { Button, Title } from 'react-native-paper';
 
 import global from '../styles/global';
 
-import * as firebase from 'firebase';
-
 export default function Welcome({ navigation }){
-    
-    const isLoggedIn = () => {
-        firebase.auth().onAuthStateChanged((user) => {
-            if(user){
-                navigation.reset({
-                    index: 0,
-                    routes: [{ name: 'User' }],
-                });
-            }else if(!user){
-                navigation.reset({
-                    index: 0,
-                    routes: [{ name: '' }],
-                })
-            }
-        })
-    }
 
     return (
         <View style={{...global.container, ...{backgroundColor: '#D2F8F6'}}}>
