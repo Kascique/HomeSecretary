@@ -69,4 +69,7 @@ export default StyleSheet.create({
         alignSelf: 'flex-start',
         marginLeft: 30
     },
+    loadingText: {
+        color: '#fff'
+    },
 })

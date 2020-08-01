@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, SafeAreaView, Image, ScrollView, Keyboard, Alert } from 'react-native';
 import { TextInput, HelperText, Button } from 'react-native-paper';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import * as firebase from 'firebase';
 
@@ -19,6 +20,9 @@ export default function SignUp({ navigation }){
     const [password, setPassword] = useState('');
     const [passwordError, setPasswordError] = useState(false);
     const [passwordHelper, setPasswordHelper] = useState('');
+
+    const [loading, setLoading] = useState(false);
+    const [loadingMsg, setLoadingMsg] = useState('Loading...');
 
     const validateFullName = (value) => {
         setFullName(value);
@@ -82,6 +86,11 @@ export default function SignUp({ navigation }){
     return(
        <SafeAreaView style={global.droidSafeArea}>
           <View style={global.container}>
+             <Spinner
+                visible={loading}
+                textContent={loadingMsg}
+                textStyle={global.loadingText}/>
+                
              <ScrollView style={global.accessScrollView}>
                 <View style={global.accessForm}>
                     <View style={global.accessBase}>
