@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { StyleSheet, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -6,10 +6,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import * as firebase from 'firebase';
 
+import SplashScreen from './screens/splashScreen';
+
 import Welcome from './screens/homeScreen';
 
 import loginScreen from './screens/loginScreen';
 import signupScreen from './screens/signupScreen';
+
+import userScreen from './screens/userScreen';
 
 //initialize firebase
 const firebaseconfig = {
@@ -67,8 +71,8 @@ export default function Main(){
               <Stack.Navigator>
 
                 <Stack.Screen 
-                  name="Welcome" 
-                  component={Welcome}
+                  name="Splash" 
+                  component={SplashScreen}
                   options={{
                     headerShown: false
                   }}/>
@@ -77,10 +81,19 @@ export default function Main(){
                       isLoggedIn ? (
                         <>
                           {/** If user is logged in */}
+                          <Stack.Screen 
+                            name="User" 
+                            component={userScreen}/>
                         </>
                       ) : (
                         <>
                           {/** If user NOT logged in */}
+                          <Stack.Screen 
+                            name="Welcome" 
+                            component={Welcome}
+                            options={{
+                              headerShown: false
+                            }}/>
                           <Stack.Screen 
                             name="Login" 
                             component={loginScreen}
