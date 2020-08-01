@@ -35,7 +35,7 @@ export default StyleSheet.create({
     },
     textInput:{
         width: '80%',
-        marginTop: 20,
+        marginTop: 5,
         backgroundColor: '#fafafa'
     },
     helper: {
@@ -49,6 +49,9 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    accessScrollView: {
+       backgroundColor: '#fff'
+    },
     accessBtn: {
         width: '80%',
         paddingTop: 8,
@@ -56,5 +59,14 @@ export default StyleSheet.create({
         marginTop: 30,
         borderRadius: 8,
         backgroundColor: '#4ECDC4',
-    }
+    },
+    accessBtnTxt: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold'
+    },
+    helper: {
+        alignSelf: 'flex-start',
+        marginLeft: 30
+    },
 })

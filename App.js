@@ -1,13 +1,28 @@
 import React, { useState } from 'react';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
-import { View, Text, StyleSheet, Platform, SafeAreaView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+
+import * as firebase from 'firebase';
 
 import Welcome from './screens/homeScreen';
 
 import loginScreen from './screens/loginScreen';
 import signupScreen from './screens/signupScreen';
+
+//initialize firebase
+const firebaseconfig = {
+  apiKey: "AIzaSyDkIOVp253_4e6Bnc8hx55RA5aeNpsCGYY",
+  authDomain: "home-secretary-233da.firebaseapp.com",
+  databaseURL: "https://home-secretary-233da.firebaseio.com",
+  projectId: "home-secretary-233da",
+  storageBucket: "home-secretary-233da.appspot.com",
+}
+
+if(!firebase.apps.length){
+  firebase.initializeApp(firebaseconfig);
+}
 
 
 export default function Main(){
@@ -16,17 +31,26 @@ export default function Main(){
     roundness: 2,
     colors: {
       ...DefaultTheme.colors,
-      primary: '#147cbc',
+      primary: '#4ECDC4',
       accent: '#3b8ccc'
     }
   }
 
-  const [isLoggedIn, setisLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  firebase.auth().onAuthStateChanged((user) => {
+    if(user){
+       setIsLoggedIn(true);
+    }else{
+       setIsLoggedIn(false);
+    }
+  })
 
   const Stack = createStackNavigator();
 
   const headerOptions = {
       title: "",
+      headerTintColor: '#222',
       headerStyle: {
         backgroundColor: '#fff',
         shadowOpacity: 0,
@@ -39,7 +63,6 @@ export default function Main(){
 
   return(
     <PaperProvider theme={theme}>
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss() }>
             <NavigationContainer>
               <Stack.Navigator>
 
@@ -61,9 +84,7 @@ export default function Main(){
                           <Stack.Screen 
                             name="Login" 
                             component={loginScreen}
-                            options={{
-                              headerShown: true
-                            }}/>
+                            options={headerOptions}/>
 
                           <Stack.Screen 
                             name="SignUp" 
@@ -87,7 +108,6 @@ export default function Main(){
 
               </Stack.Navigator>
             </NavigationContainer>
-      </TouchableWithoutFeedback>
     </PaperProvider>
   )
 }

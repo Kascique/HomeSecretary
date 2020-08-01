@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, SafeAreaView, Image } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaView, Image, ScrollView } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 
 import global from '../styles/global';
@@ -11,6 +11,7 @@ export default function Login(){
     return(
        <SafeAreaView style={global.droidSafeArea}>
           <View style={global.container}>
+             <ScrollView style={global.accessScrollView}>
              <View style={global.accessForm}>
                 <View style={global.accessBase}>
                     <Image 
@@ -30,10 +31,11 @@ export default function Login(){
                     <Button
                         style={global.accessBtn}
                         mode="contained">
-                        Log In
+                        <Text style={global.accessBtnTxt}>Log In</Text>
                     </Button>
                 </View>
              </View>
+             </ScrollView>
           </View>
        </SafeAreaView>
     )

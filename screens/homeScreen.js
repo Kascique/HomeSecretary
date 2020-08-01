@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
         bottom: - 20
     },
     footerWrapper: {
-        width: '70%',
+        width: '90%',
         height: 60,
         alignSelf: 'center',
         flexDirection: 'row',
