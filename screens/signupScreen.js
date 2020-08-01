@@ -79,7 +79,44 @@ export default function SignUp({ navigation }){
               ]
           )
        }else{
+          setLoading(true);
+          try{
+            let response = await firebase.auth().createUserWithEmailAndPassword(email, password);
+            const update = {
+                displayName: fullName
+            };
 
+            await firebase.auth().currentUser.updateProfile(update);
+
+            if(response && response.user){
+                setLoading(null);
+                Alert.alert(
+                    'Success',
+                    'Your account have been created successful, you can now access all features in this app',
+                    [
+                        {
+                            text: 'OK'
+                        }
+                    ]
+                )
+            }else{
+                Alert.alert('Oops', 'Something went wrong... try again later');
+            }
+          }
+          catch(error){
+              Alert.alert(
+                  'Error',
+                  `${error}`,
+                  [
+                      {
+                          text: 'OK',
+                          onPress: () => {
+                              setLoading(false);
+                          }
+                      }
+                  ]
+              )
+          }
        }
     }
 
