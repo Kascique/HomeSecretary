@@ -6,6 +6,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Welcome from './screens/homeScreen';
 
+import loginScreen from './screens/loginScreen';
+import signupScreen from './screens/signupScreen';
+
+
 export default function Main(){
   const theme = {
     ...DefaultTheme,
@@ -21,6 +25,18 @@ export default function Main(){
 
   const Stack = createStackNavigator();
 
+  const headerOptions = {
+      title: "",
+      headerStyle: {
+        backgroundColor: '#fff',
+        shadowOpacity: 0,
+        elevation: 0,
+        shadowOffset: {
+          height: 0,
+        },
+      },
+  }
+
   return(
     <PaperProvider theme={theme}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss() }>
@@ -34,17 +50,30 @@ export default function Main(){
                     headerShown: false
                   }}/>
 
-                  {
-                    isLoggedIn ? (
-                      <>
-                         
-                      </>
-                    ) : (
-                      <>
-                        
-                      </>
-                    )
-                  }
+                    {
+                      isLoggedIn ? (
+                        <>
+                          {/** If user is logged in */}
+                        </>
+                      ) : (
+                        <>
+                          {/** If user NOT logged in */}
+                          <Stack.Screen 
+                            name="Login" 
+                            component={loginScreen}
+                            options={{
+                              headerShown: true
+                            }}/>
+
+                          <Stack.Screen 
+                            name="SignUp" 
+                            component={signupScreen}
+                            options={headerOptions}/>
+
+                        </>
+                      )
+                    }
+
 
                {/* <SafeAreaView style={styles.droidSafeArea}>
                   <Stack.Screen 

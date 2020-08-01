@@ -4,9 +4,10 @@ import { TextInput, Button } from 'react-native-paper';
 
 import global from '../styles/global';
 
-export default function Login(){
+export default function SignUp(){
+    const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('')
+    const [password, setPassword] = useState('');
 
     return(
        <SafeAreaView style={global.droidSafeArea}>
@@ -16,6 +17,12 @@ export default function Login(){
                     <Image 
                         style={global.logo}
                         source={require('../assets/HomeSecretaryLogo.png')}/>
+                    <TextInput 
+                        style={global.textInput}
+                        label="Full name"
+                        value={fullName}
+                        onChangeText={fullName => setFullName(fullName)}/>
+
                     <TextInput 
                         style={global.textInput}
                         label="Email Address"
@@ -30,7 +37,7 @@ export default function Login(){
                     <Button
                         style={global.accessBtn}
                         mode="contained">
-                        Log In
+                        Create Account
                     </Button>
                 </View>
              </View>

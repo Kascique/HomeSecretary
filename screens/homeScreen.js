@@ -4,7 +4,7 @@ import { Button, Title } from 'react-native-paper';
 
 import global from '../styles/global';
 
-export default function Welcome(){
+export default function Welcome({ navigation }){
     
     return (
         <View style={{...global.container, ...{backgroundColor: '#D2F8F6'}}}>
@@ -21,10 +21,10 @@ export default function Welcome(){
                    resizeMode='cover'
                    source={require('../assets/temp/footer_image.png')}>
                   <View style={styles.footerWrapper}>
-                      <TouchableWithoutFeedback>
+                      <TouchableWithoutFeedback onPress={() => navigation.navigate('SignUp')}> 
                           <Text style={styles.btnTxt}>Sign Up</Text>
                       </TouchableWithoutFeedback>
-                      <TouchableWithoutFeedback>
+                      <TouchableWithoutFeedback onPress={() => navigation.navigate('Login')}>
                           <Text style={styles.btnTxt}>Login</Text>
                       </TouchableWithoutFeedback>
                    </View>
