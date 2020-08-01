@@ -1,22 +1,50 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { View, Text, StyleSheet, Platform, SafeAreaView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <Text>Something AWESOME is coming! 😎</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+import Welcome from './screens/homeScreen';
+
+export default function Main(){
+  const theme = {
+    ...DefaultTheme,
+    roundness: 2,
+    colors: {
+      ...DefaultTheme.colors,
+      primary: '#147cbc',
+      accent: '#3b8ccc'
+    }
+  }
+
+  const Stack = createStackNavigator();
+
+  return(
+    <PaperProvider theme={theme}>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss() }>
+          <SafeAreaView style={styles.droidSafeArea}>
+            <NavigationContainer>
+              <Stack.Navigator>
+
+                <Stack.Screen 
+                  name="Welcome" 
+                  component={Welcome}
+                  options={{
+                    headerShown: false
+                  }}/>
+
+              </Stack.Navigator>
+            </NavigationContainer>
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
+    </PaperProvider>
+  )
 }
 
 const styles = StyleSheet.create({
-  container: {
+  droidSafeArea: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    backgroundColor: 'white',
+    paddingTop: Platform.OS === 'android' ? 25 : 0,
+  }
+})
