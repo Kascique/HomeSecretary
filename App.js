@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { View, Text, StyleSheet, Platform, SafeAreaView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -17,6 +17,8 @@ export default function Main(){
     }
   }
 
+  const [isLoggedIn, setisLoggedIn] = useState(false);
+
   const Stack = createStackNavigator();
 
   return(
@@ -31,6 +33,18 @@ export default function Main(){
                   options={{
                     headerShown: false
                   }}/>
+
+                  {
+                    isLoggedIn ? (
+                      <>
+                         
+                      </>
+                    ) : (
+                      <>
+                        
+                      </>
+                    )
+                  }
 
                {/* <SafeAreaView style={styles.droidSafeArea}>
                   <Stack.Screen 
