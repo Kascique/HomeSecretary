@@ -167,6 +167,7 @@ export default function SignUp({ navigation }){
                             error={passwordError}
                             label="Password"
                             value={password}
+                            secureTextEntry={true}
                             onSubmitEditing={signupSubmit}
                             onChangeText={validatePassword}/>
                         <HelperText
