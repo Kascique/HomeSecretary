@@ -41,10 +41,13 @@ export default function Main(){
   }
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [displayName, setDisplayName] = useState('Loading...')
 
   firebase.auth().onAuthStateChanged((user) => {
     if(user){
        setIsLoggedIn(true);
+       setDisplayName(user.providerData[0].displayName);
+       console.log('Display name is: '+displayName);
     }else{
        setIsLoggedIn(false);
     }
@@ -85,13 +88,17 @@ export default function Main(){
                             name="User" 
                             component={userScreen}
                             options={({ navigation }) => ({
+                              title: displayName,                              
                               headerRight: () => (
                                 <Button
-                                  color="#fff"
+                                  color="red"
                                   onPress={() => {
-
+                                     firebase.auth().signOut()
+                                             .then(() => {
+                                               navigation.navigate('Splash');
+                                             });
                                   }}>
-                                  Log Out
+                                  Logout
                                 </Button>
                               )
                             })}/>

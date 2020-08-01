@@ -8,7 +8,7 @@ import global from '../styles/global';
 export default function User({ navigation }){
     return(
         <SafeAreaView style={global.droidSafeArea}>
-            <View style={global.container}>
+            <View style={{...global.container, ...{backgroundColor: '#fff'}}}>
                 <Text>Welcome User</Text>
             </View>
         </SafeAreaView>

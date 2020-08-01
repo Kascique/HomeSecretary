@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, View, Image, Text, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Image, ActivityIndicator } from 'react-native';
 
 import global from '../styles/global';
 
@@ -21,10 +21,10 @@ export default function Splash({ navigation }){
             }else if(!user){
                 navigation.reset({
                     index: 0,
-                    routes: [{ name: '' }],
+                    routes: [{ name: 'Welcome' }],
                 })
             }
-        })
+        });
     }
 
     return(
