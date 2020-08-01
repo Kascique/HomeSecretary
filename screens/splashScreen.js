@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View, Image, Text, ActivityIndicator } from 'react-native';
 
 import global from '../styles/global';
@@ -6,6 +6,27 @@ import global from '../styles/global';
 import * as firebase from 'firebase';
 
 export default function Splash({ navigation }){
+
+    useEffect(() => {
+        isLoggedIn();
+    })
+
+    const isLoggedIn = () => {
+        firebase.auth().onAuthStateChanged((user) => {
+            if(user){
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'User' }],
+                });
+            }else if(!user){
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: '' }],
+                })
+            }
+        })
+    }
+
     return(
         <View style={{...global.container, ...{backgroundColor: '#D2F8F6'}}}>
            <View style={{...global.wrapper, ...styles.wrapper}}>
