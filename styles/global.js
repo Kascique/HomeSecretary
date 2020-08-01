@@ -5,10 +5,27 @@ export default StyleSheet.create({
         flex: 1,
     },
     container: {
-        width: '95%',
-        height: '98%',
+        width: '100%',
+        height: '100%',
         alignSelf: 'center',
         backgroundColor: 'red',
-        marginTop: '2%'
+    },
+    accessForm: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        backgroundColor: '#fff',
+    },
+    accessBase: {
+        width: '90%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 30
+    },
+    logo: {
+        width: 250,
+        resizeMode: 'contain',
+        alignSelf: 'center'
     }
 })

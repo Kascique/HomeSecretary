@@ -22,7 +22,6 @@ export default function Main(){
   return(
     <PaperProvider theme={theme}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss() }>
-          <SafeAreaView style={styles.droidSafeArea}>
             <NavigationContainer>
               <Stack.Navigator>
 
@@ -33,9 +32,18 @@ export default function Main(){
                     headerShown: false
                   }}/>
 
+               {/* <SafeAreaView style={styles.droidSafeArea}>
+                  <Stack.Screen 
+                    name="Welcome" 
+                    component={Welcome}
+                    options={{
+                      headerShown: false
+                    }}/>
+                </SafeAreaView> */}
+
+
               </Stack.Navigator>
             </NavigationContainer>
-        </SafeAreaView>
       </TouchableWithoutFeedback>
     </PaperProvider>
   )
