@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, Modal, TextBase, SafeAreaView } from 'react-native';
-import { Appbar,Title, Paragraph, Card, Avatar, IconButton, Button, FAB } from 'react-native-paper';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, Modal, SafeAreaView, FlatList, Keyboard, Alert } from 'react-native';
+import { Appbar,Title, Paragraph, Card, Avatar, IconButton, Button, FAB, TextInput } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -53,10 +53,71 @@ function MembersScreen(){
 function ToDoScreen(){
      const [isModalVisible, setisModalVisible] = useState(false);
 
+     const [newToDo, setNewToDo] = useState('');
+
+     const [toDo, setToDo] = useState([
+         { text: 'Wash dishes', key: '1'},
+         { text: 'Wash dishes', key: '2'},
+         { text: 'Wash dishes', key: '3'}
+     ]);
+
+     const [user, setUser] = useState('');
+
+     useEffect(() => {
+         (async () => {
+           getToDo();
+         })();
+     })
+
+
+     firebase.auth().onAuthStateChanged((u) => {
+        if (u != null) {
+          setUser(u);
+         // console.log(u);
+        }
+      });
+
      const closeModal = () => {
          setisModalVisible(false);
      }
 
+     const getToDo = async () => {
+         firebase.database().ref(user.uid+'/ToDo/').on('value', (snapshot) => {
+             const test = snapshot.val();
+             console.log('ToDo listing '+ test);
+         });
+     }
+
+     const submitToDo = async () => {
+         Keyboard.dismiss();
+         if(newToDo == ''){
+             alert('Please enter To Do Info');
+         }else{
+            // console.log(user.uid);
+             var newID = new Date().getUTCMilliseconds();
+             setNewToDo('');
+              await firebase.database().ref(user.uid+'/ToDo/'+newID).set({
+                  toDo: newToDo,
+                  key: newID
+              }).then(() => {
+                  Alert.alert(
+                      'Success',
+                      'To Do added successfully, do you want to add more?',
+                      [
+                          {
+                              text: 'YES'
+                          },
+                          {
+                              text: 'NO',
+                              onPress: closeModal
+                          }
+                      ]
+                  )
+              }).catch((error) => {
+                  alert(`${error}`);
+              });
+         }
+     }
     return(
         <View style={global.wrapper}>
             
@@ -66,26 +127,42 @@ function ToDoScreen(){
                onRequestClose={() => {
                    console.log('Modal Close')
                }}>
-                 <SafeAreaView style={global.droidSafeArea}>
-                     <Appbar>
-                       <Appbar.BackAction onPress={closeModal}/>
-                       <Appbar.Content title="Create To Do"/>
-                     </Appbar>
-                     <View style={styles.wrapper}>
-                         <Text>Welcome</Text>
-                     </View>
-                 </SafeAreaView>
+                <SafeAreaView>
+                            <Appbar>
+                            <Appbar.BackAction onPress={closeModal}/>
+                            <Appbar.Content title="Create To Do"/>
+                            </Appbar>
+                            <View style={{...styles.wrapper, ...{marginTop: 20, alignItems: 'center'}}}>
+                                <TextInput 
+                                    style={global.textInput}
+                                    label="Enter New To Do"
+                                    value={newToDo}
+                                    onSubmitEditing={submitToDo}
+                                    onChangeText={(newToDo) => setNewToDo(newToDo)}/>
+                                <Button 
+                                  style={global.accessBtn}
+                                  onPress={submitToDo}>
+                                   <Text style={global.accessBtnTxt}>Submit</Text>
+                                </Button>
+                            </View>
+                    </SafeAreaView>
              </Modal>
 
-            <View style={styles.wrapper}>
-               <Title>To Do</Title>
-               <View style={styles.toDoCon}>
-                   <Title style={styles.toDoTxt}>Wash Dishes</Title>
-                   <IconButton 
-                       icon="close"
-                       size={25}/>
-               </View>
-            </View>
+             <View style={{...styles.wrapper, ...{flex: 1}}}>
+                <Title>To Do</Title>
+
+                <FlatList 
+                data={toDo}
+                renderItem={({ item }) => (   
+                        <View style={styles.toDoCon}>
+                            <Title style={styles.toDoTxt}>{ item.text }</Title>
+                            <IconButton 
+                                icon="close"
+                                size={25}/>
+                        </View>
+                )}/>
+             </View>
+
             <FAB 
                style={styles.fab}
                label="Create"
@@ -202,6 +279,8 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         height: '100%',
         justifyContent: 'center',
+        paddingLeft: 10,
+        paddingBottom: 10
     },
     memberIcon: {
         color: '#DBDBDB',
