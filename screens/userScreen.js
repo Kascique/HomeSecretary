@@ -32,7 +32,7 @@ function EventsScreen(){
 
 function MembersScreen(){
     return(
-        <View style={global.wrapper}>
+        <View style={{...global.wrapper, ...{backgroundColor: '#fff'}}}>
             <View style={styles.wrapper}>
                <Title>Members</Title>
                <View style={styles.member}>
@@ -46,6 +46,12 @@ function MembersScreen(){
                   </View>
                </View>
             </View>
+            <FAB
+              style={styles.fab}
+              icon="plus"
+              label="Create"
+              color="#fff"
+              onPress={console.log("press")}/>
         </View>
     )
 }
@@ -67,7 +73,7 @@ function ToDoScreen(){
 
      useEffect(() => {
          (async () => {
-            getToDo();
+            
          })();
      });
 
@@ -99,9 +105,13 @@ function ToDoScreen(){
          });
      }
 
+     getToDo();
+
      const deleteToDo = async (deleteID) => {
        let removedToDo = firebase.database().ref(user.uid+'/ToDo/'+deleteID);
-       removedToDo.remove();
+       removedToDo.remove().then(() => {
+           
+       });
      }
 
      const submitToDo = async () => {
@@ -134,6 +144,7 @@ function ToDoScreen(){
               });
          }
      }
+     
     return(
         <View style={{...global.wrapper, ...{backgroundColor: '#fff'}}}>
             
