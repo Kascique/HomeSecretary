@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Modal, SafeAreaView, FlatList, Keyboard, Alert } from 'react-native';
+import { StyleSheet, View, Text, Modal, SafeAreaView, FlatList, Keyboard, Alert, ActivityIndicator } from 'react-native';
 import { Appbar,Title, Paragraph, Card, Avatar, IconButton, Button, FAB, TextInput } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
@@ -55,17 +55,17 @@ function ToDoScreen(){
 
      const [newToDo, setNewToDo] = useState('');
 
-     const [toDo, setToDo] = useState([
-         { text: 'Wash dishes', key: '1'},
-         { text: 'Wash dishes', key: '2'},
-         { text: 'Wash dishes', key: '3'}
-     ]);
+     const [toDo, setToDo] = useState(null);
+
+     const [toDoList, setToDoList] = useState(null)
+
+     const [loading, setloading] = useState(true)
 
      const [user, setUser] = useState('');
 
      useEffect(() => {
          (async () => {
-           getToDo();
+            getToDo();
          })();
      })
 
@@ -84,9 +84,30 @@ function ToDoScreen(){
      const getToDo = async () => {
          firebase.database().ref(user.uid+'/ToDo/').on('value', (snapshot) => {
              const test = snapshot.val();
-             console.log('ToDo listing '+ test);
+
+             //  console.log('ToDo listing '+ JSON.stringify(test));
+             try{
+                const testArray = Object.values(test);
+                console.log('Array '+testArray[0].key);  
+
+                setloading(false);
+
+                //  <FlatList 
+                //     data={testArray}
+                //     renderItem={({ item }) => (  
+                //             <View style={styles.toDoCon}>
+                //                 <Title style={styles.toDoTxt}>{ item.toDo }</Title>
+                //                 <IconButton 
+                //                     icon="close"
+                //                     size={25}/>
+                //             </View>
+                //     )}/>
+                 
+
+             }catch(error){ console.log(error) }       
          });
      }
+
 
      const submitToDo = async () => {
          Keyboard.dismiss();
@@ -97,7 +118,7 @@ function ToDoScreen(){
              var newID = new Date().getUTCMilliseconds();
              setNewToDo('');
               await firebase.database().ref(user.uid+'/ToDo/'+newID).set({
-                  toDo: newToDo,
+                  text: newToDo,
                   key: newID
               }).then(() => {
                   Alert.alert(
@@ -119,7 +140,7 @@ function ToDoScreen(){
          }
      }
     return(
-        <View style={global.wrapper}>
+        <View style={{...global.wrapper, ...{backgroundColor: '#fff'}}}>
             
             <Modal
                animationType={'slide'}
@@ -151,16 +172,12 @@ function ToDoScreen(){
              <View style={{...styles.wrapper, ...{flex: 1}}}>
                 <Title>To Do</Title>
 
-                <FlatList 
-                data={toDo}
-                renderItem={({ item }) => (   
-                        <View style={styles.toDoCon}>
-                            <Title style={styles.toDoTxt}>{ item.text }</Title>
-                            <IconButton 
-                                icon="close"
-                                size={25}/>
-                        </View>
-                )}/>
+                {
+                    loading 
+                    ? <ActivityIndicator/>
+                    : toDoList
+                }
+
              </View>
 
             <FAB 
