@@ -67,8 +67,7 @@ function ToDoScreen(){
          (async () => {
             getToDo();
          })();
-     })
-
+     });
 
      firebase.auth().onAuthStateChanged((u) => {
         if (u != null) {
@@ -82,7 +81,7 @@ function ToDoScreen(){
      }
 
      const getToDo = async () => {
-         firebase.database().ref(user.uid+'/ToDo/').on('value', (snapshot) => {
+         await firebase.database().ref(user.uid+'/ToDo/').on('value', (snapshot) => {
              const test = snapshot.val();
 
              //  console.log('ToDo listing '+ JSON.stringify(test));
@@ -90,24 +89,12 @@ function ToDoScreen(){
                 const testArray = Object.values(test);
                 console.log('Array '+testArray[0].key);  
 
-                setloading(false);
-
-                //  <FlatList 
-                //     data={testArray}
-                //     renderItem={({ item }) => (  
-                //             <View style={styles.toDoCon}>
-                //                 <Title style={styles.toDoTxt}>{ item.toDo }</Title>
-                //                 <IconButton 
-                //                     icon="close"
-                //                     size={25}/>
-                //             </View>
-                //     )}/>
-                 
-
+                // setToDo(testArray);
+                // setloading(false);
+            
              }catch(error){ console.log(error) }       
          });
      }
-
 
      const submitToDo = async () => {
          Keyboard.dismiss();
@@ -174,8 +161,17 @@ function ToDoScreen(){
 
                 {
                     loading 
-                    ? <ActivityIndicator/>
-                    : toDoList
+                    ? <ActivityIndicator size="large"/>
+                    :  <FlatList 
+                            data={toDo}
+                            renderItem={({ item }) => (  
+                                    <View style={styles.toDoCon}>
+                                        <Title style={styles.toDoTxt}>{ item.text }</Title>
+                                        <IconButton 
+                                            icon="close"
+                                            size={25}/>
+                                    </View>
+                            )}/>
                 }
 
              </View>
