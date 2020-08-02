@@ -1,6 +1,6 @@
-import React from 'react';
-import { StyleSheet, View, Text, SafeAreaView, TextBase } from 'react-native';
-import { Title, Avatar } from 'react-native-paper';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, Modal, TextBase, SafeAreaView } from 'react-native';
+import { Appbar,Title, Paragraph, Card, Avatar, IconButton, Button, FAB } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -9,6 +9,7 @@ import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import * as firebase from 'firebase';
 
 import global from '../styles/global';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 function EventsScreen(){
     return(
@@ -50,15 +51,48 @@ function MembersScreen(){
 }
 
 function ToDoScreen(){
+     const [isModalVisible, setisModalVisible] = useState(false);
+
+     const closeModal = () => {
+         setisModalVisible(false);
+     }
+
     return(
         <View style={global.wrapper}>
+            
+            <Modal
+               animationType={'slide'}
+               visible={isModalVisible}
+               onRequestClose={() => {
+                   console.log('Modal Close')
+               }}>
+                 <SafeAreaView style={global.droidSafeArea}>
+                     <Appbar>
+                       <Appbar.BackAction onPress={closeModal}/>
+                       <Appbar.Content title="Create To Do"/>
+                     </Appbar>
+                     <View style={styles.wrapper}>
+                         <Text>Welcome</Text>
+                     </View>
+                 </SafeAreaView>
+             </Modal>
+
             <View style={styles.wrapper}>
                <Title>To Do</Title>
                <View style={styles.toDoCon}>
                    <Title style={styles.toDoTxt}>Wash Dishes</Title>
-                   <MaterialCommunityIcons style={styles.memberIcon} name="check" size={25}/>
+                   <IconButton 
+                       icon="close"
+                       size={25}/>
                </View>
             </View>
+            <FAB 
+               style={styles.fab}
+               label="Create"
+               color="#fff"
+               expanded
+               icon="plus"
+               onPress={() => setisModalVisible(true)}/>
         </View>
     )
 }
@@ -68,6 +102,23 @@ function JobsScreen(){
         <View style={global.wrapper}>
             <View style={styles.wrapper}>
                <Title>Jobs</Title>
+               <Card>
+                   <Card.Content>
+                       <Title>Card Title</Title>
+                       <Paragraph>Card COntent</Paragraph>
+                   </Card.Content>
+                   <Card.Actions>
+                       <View style={styles.jobFooter}>
+                           <View style={styles.jobLeft}>
+                               <Button>1/4</Button>
+                               <Button>IN PROGRESS</Button>
+                           </View>
+                           <View style={styles.jobRight}>
+                               <Button>Accept Task</Button>
+                           </View>
+                       </View>
+                   </Card.Actions>
+               </Card>
             </View>
         </View>
     )
@@ -160,14 +211,33 @@ const styles = StyleSheet.create({
     toDoCon: {
         width: '100%',
         height: 60,
-        backgroundColor: 'red',
+        backgroundColor: '#F7F7F7',
         borderRadius: 10,
         alignSelf: 'center',
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: 10
     },
     toDoTxt: {
         flex: 1,
         marginLeft: 20
+    },
+
+    jobFooter: {
+        flexDirection: 'row',
+        alignContent: 'space-between'
+    },
+    jobLeft: {
+        alignSelf: 'flex-start'
+    },
+    jobRight: {
+        alignSelf: 'flex-end'
+    },
+    fab: {
+        backgroundColor: "#4ECDC4",
+        position: 'absolute',
+        alignSelf: 'center',
+        margin: 16,
+        bottom: 0,
     }
 })
