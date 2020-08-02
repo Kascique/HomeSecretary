@@ -55,7 +55,9 @@ function ToDoScreen(){
 
      const [newToDo, setNewToDo] = useState('');
 
-     const [toDo, setToDo] = useState(null);
+    //  const [toDo, setToDo] = useState([]);
+
+     let toDo = [];
 
      const [toDoList, setToDoList] = useState(null)
 
@@ -88,9 +90,14 @@ function ToDoScreen(){
              try{
                 const testArray = Object.values(test);
                 console.log('Array '+testArray[0].key);  
-
+                 
+                for(let i = 0; i < testArray.length; i++){
+                    toDo.push(testArray[i]);
+                }
                 // setToDo(testArray);
-                // setloading(false);
+                 setloading(false);
+
+                console.log(toDo);
             
              }catch(error){ console.log(error) }       
          });
