@@ -83,22 +83,18 @@ function ToDoScreen(){
      }
 
      const getToDo = async () => {
+         
          await firebase.database().ref(user.uid+'/ToDo/').on('value', (snapshot) => {
              const test = snapshot.val();
-
+             toDo.pop();
              //  console.log('ToDo listing '+ JSON.stringify(test));
              try{
                 const testArray = Object.values(test);
                 console.log('Array '+testArray[0].key);  
-                 
                 for(let i = 0; i < testArray.length; i++){
                     toDo.push(testArray[i]);
                 }
-                // setToDo(testArray);
-                 setloading(false);
-
-                console.log(toDo);
-            
+                 setloading(false);            
              }catch(error){ console.log(error) }       
          });
      }
