@@ -99,6 +99,11 @@ function ToDoScreen(){
          });
      }
 
+     const deleteToDo = async (deleteID) => {
+       let removedToDo = firebase.database().ref(user.uid+'/ToDo/'+deleteID);
+       removedToDo.remove();
+     }
+
      const submitToDo = async () => {
          Keyboard.dismiss();
          if(newToDo == ''){
@@ -172,7 +177,9 @@ function ToDoScreen(){
                                         <Title style={styles.toDoTxt}>{ item.text }</Title>
                                         <IconButton 
                                             icon="close"
-                                            size={25}/>
+                                            size={25}
+                                            onPress={() => deleteToDo(item.key)}
+                                            />
                                     </View>
                             )}/>
                 }
