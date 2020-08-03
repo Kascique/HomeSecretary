@@ -14,7 +14,7 @@ export default StyleSheet.create({
         width: '100%',
         height: '100%',
         alignSelf: 'center',
-        backgroundColor: 'red',
+        backgroundColor: '#fff',
     },
     accessForm: {
         flex: 1,
@@ -71,5 +71,5 @@ export default StyleSheet.create({
     },
     loadingText: {
         color: '#fff'
-    },
+    }
 })

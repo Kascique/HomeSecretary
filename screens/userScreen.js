@@ -31,8 +31,50 @@ function EventsScreen(){
 }
 
 function MembersScreen(){
+     
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const [groupName, setGroupName] = useState('');
+
+    const closeModal = () => {
+        setIsModalVisible(false);
+    }
+
+    const openModal = () => {
+        setIsModalVisible(true);
+    }
+
+    const submitGroup = () => {
+       Keyboard.dismiss();
+    }
+
     return(
         <View style={{...global.wrapper, ...{backgroundColor: '#fff'}}}>
+            
+           <Modal
+              animationType={'slide'}
+              visible={isModalVisible}>
+               <SafeAreaView>
+                   <Appbar>
+                       <Appbar.BackAction onPress={()=> closeModal()}/>
+                       <Appbar.Content title="Create Group"/>
+                   </Appbar>
+                   <View style={{...styles.wrapper, ...{marginTop: 20, alignItems: 'center'}}}>
+                       <TextInput 
+                           style={global.textInput}
+                           label="Enter New To Do"
+                           value={groupName}
+                           onSubmitEditing={submitGroup}
+                           onChangeText={(groupName) => setGroupName(groupName)}/>
+                        <Button 
+                           style={global.accessBtn}
+                           onPress={submitGroup}>
+                                <Text style={global.accessBtnTxt}>Submit</Text>
+                        </Button>
+                   </View>
+               </SafeAreaView>
+           </Modal>
+            
             <View style={styles.wrapper}>
                <Title>Members</Title>
                <View style={styles.member}>
@@ -51,7 +93,7 @@ function MembersScreen(){
               icon="plus"
               label="Create"
               color="#fff"
-              onPress={console.log("press")}/>
+              onPress={()=>{ openModal() }}/>
         </View>
     )
 }

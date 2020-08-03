@@ -13,6 +13,9 @@ import Welcome from './screens/homeScreen';
 import loginScreen from './screens/loginScreen';
 import signupScreen from './screens/signupScreen';
 
+
+import userGroups from './screens/userGroups';
+
 import userScreen from './screens/userScreen';
 
 //initialize firebase
@@ -84,6 +87,26 @@ export default function Main(){
                       isLoggedIn ? (
                         <>
                           {/** If user is logged in */}
+                          <Stack.Screen 
+                            name="Groups" 
+                            component={userGroups}
+                            options={({ navigation }) => ({
+                              title: displayName,                              
+                              headerRight: () => (
+                                <Button
+                                  color="red"
+                                  onPress={() => {
+                                     firebase.auth().signOut()
+                                             .then(() => {
+                                               navigation.navigate('Splash');
+                                             });
+                                  }}>
+                                  Logout
+                                </Button>
+                              )
+                            })}/>
+
+
                           <Stack.Screen 
                             name="User" 
                             component={userScreen}

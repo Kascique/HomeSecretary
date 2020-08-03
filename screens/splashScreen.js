@@ -16,7 +16,7 @@ export default function Splash({ navigation }){
             if(user){
                 navigation.reset({
                     index: 0,
-                    routes: [{ name: 'User' }],
+                    routes: [{ name: 'Groups' }],
                 });
             }else if(!user){
                 navigation.reset({
