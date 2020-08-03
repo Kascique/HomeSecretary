@@ -35,36 +35,43 @@ export default function Groups(){
         await firebase.database().ref(`Groups`).on('value', (snapshot) => {
             const data = snapshot.val();
             const uid = user.uid;
-            try{
-                const dataArray = Object.values(data);
-
-                for(let i = 0; i < dataArray.length; i++){
-                    const members = dataArray[i].Members;
-                    const memberArray = Object.values(members);
-                    const userID = Object.values(memberArray[0])[2];
-                    const key = Object.values(memberArray[0])[1];
-
-                    //console.log(dataArray[i].name);
-
-                   // console.log('UserID '+userID+' key '+key);
-
-                    if(userID == user.uid){
-                       // console.log('member');
-                        
-                        groups.push(
-                            { id: key, name: dataArray[i].name, key: key.toString()}
-                        );
+            if(data == null){
+                console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+                console.log('data is null');
+            }else{
+                try{
+                    const dataArray = Object.values(data);
+    
+                    for(let i = 0; i < dataArray.length; i++){
+                        const members = dataArray[i].Members;
+                        const memberArray = Object.values(members);
+                        const userID = Object.values(memberArray[0])[2];
+                        const key = Object.values(memberArray[0])[1];
+    
+                        //console.log(dataArray[i].name);
+    
+                       // console.log('UserID '+userID+' key '+key);
+    
+                        if(userID == user.uid){
+                           // console.log('member');
+                            console.log('member');
+                            groups.push(
+                                { id: key, name: dataArray[i].name, key: key.toString()}
+                            );
+                        }
                     }
+                    setGroupLoading(false);
+                    
+                }catch(error){ 
+                   // console.log('###########################################################');
+                  //  console.log(error);
                 }
-                setGroupLoading(false);
-                
-            }catch(error){ 
-              //  console.log(error) 
             }
         })
     }
 
     getGroups();
+ 
 
     const openModal = () => {
         setIsModalVisible(true);
@@ -93,13 +100,45 @@ export default function Groups(){
                 const data = snapshot.val();
                 try{
                    const dataArray = Object.values(data);
+                   let isFound = false;
 
                    for(let i = 0; i < dataArray.length; i++){
                        const members = dataArray[i].Members;
                        const memberArray = Object.values(members);
                        const groupID = dataArray[i].groupID;
-                       const groupPassword = dataArray[i].password;
-                       console.log(dataArray[i].groupID);
+                       const Password = dataArray[i].password;
+                       const name = dataArray[i].name;
+                       const currDate = new Date();
+
+                       if(joinID == groupID){
+                           if(joinPassword == Password){
+                               isFound = true;
+                               console.log('We have a match yessssssss');
+                               firebase.database().ref(`Groups/${groupID}/Members/${user.uid}`).set({
+                                    userID: user.uid,
+                                    key: groupID,
+                                    joined: currDate.toString()
+                                }).then(() => {
+                                    setjoinID('');
+                                    setjoinPassword('');
+                                    setIsJoinModalVisible(false);
+                                    // Alert.alert(
+                                    //     'Success',
+                                    //     `You have successfully joined ${name}`,
+                                    //     {
+                                    //         text: 'OK',
+                                    //         onPress: () => {
+                                    //             setIsJoinModalVisible(false);
+                                    //         }
+                                    //     }
+                                    // )
+                                }).catch((error) => console.log(error));
+                           }
+                       }
+                   }
+
+                   if(!isFound){
+                       alert('Group not found or invalid password, please check group ID or password');
                    }
                
                 }
