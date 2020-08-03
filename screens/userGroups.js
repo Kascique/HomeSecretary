@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, ActivityIndicator, Modal, SafeAreaView, Alert } from 'react-native';
-import { Appbar, FAB, TextInput, Button } from 'react-native-paper';
+import { StyleSheet, View, Text, ActivityIndicator, Modal, SafeAreaView, Alert, FlatList, TouchableWithoutFeedback } from 'react-native';
+import { Appbar, FAB, TextInput, Button, Card, Title } from 'react-native-paper';
 
 import * as firebase from 'firebase';
 
@@ -23,6 +23,43 @@ export default function Groups(){
 
     const [groupName, setGroupName] = useState('');
     const [groupPassword, setGroupPassword] = useState('');
+
+    let groups = [
+       
+    ];
+
+    const getGroups = async () => {
+        await firebase.database().ref(`Groups`).on('value', (snapshot) => {
+            const data = snapshot.val();
+            const uid = user.uid;
+            try{
+                const dataArray = Object.values(data);
+
+                for(let i = 0; i < dataArray.length; i++){
+                    const members = dataArray[i].Members;
+                    const memberArray = Object.values(members);
+                    const userID = Object.values(memberArray[0])[2];
+                    const key = Object.values(memberArray[0])[1];
+
+                    //console.log(dataArray[i].name);
+
+                   // console.log('UserID '+userID+' key '+key);
+
+                    if(userID == user.uid){
+                        console.log('member');
+                        
+                        groups.push(
+                            { id: key, name: dataArray[i].name, key: key.toString()}
+                        );
+                    }
+                }
+                setGroupLoading(false);
+                
+            }catch(error){ console.log(error) }
+        })
+    }
+
+    getGroups();
 
     const openModal = () => {
         setIsModalVisible(true);
@@ -61,6 +98,8 @@ export default function Groups(){
              const currDate = new Date();
               
               firebase.database().ref(`Groups/${groupID}/Members/${user.uid}`).set({
+                  userID: user.uid,
+                  key: groupID,
                   joined: currDate.toString()
               }).then(() => {
                     setGroupName(''); 
@@ -86,8 +125,6 @@ export default function Groups(){
 
        }
     }
-
-
 
     return(
         <View style={global.wrapper}>
@@ -162,7 +199,18 @@ export default function Groups(){
                 {
                     groupLoading
                     ? <ActivityIndicator style={{marginTop: 40}} size="large"/>
-                    : <Text>Show Groups</Text>
+                    : <FlatList
+                        data={groups}
+                        renderItem={({ item }) => (
+                            <TouchableWithoutFeedback onPress={()=>{console.log('card')}}>
+                                <Card style={styles.groupCon}>
+                                    <Card.Title title={item.name}/>
+                                    <Card.Content>
+                                        <Title>{item.id}</Title>
+                                    </Card.Content>
+                                </Card>
+                            </TouchableWithoutFeedback>
+                        ) }/>
                 }
             </View>
             <FAB
@@ -181,6 +229,13 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         alignItems: 'center',
         marginTop: 20
+    },
+    groupCon: {
+        width: '80%',
+        backgroundColor: '#F7F7F7',
+        borderRadius: 10,
+        alignSelf: 'center',
+        marginTop: 10
     },
     fab: {
         backgroundColor: "#4ECDC4",
