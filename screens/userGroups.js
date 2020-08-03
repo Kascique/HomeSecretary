@@ -49,7 +49,7 @@ export default function Groups(){
                    // console.log('UserID '+userID+' key '+key);
 
                     if(userID == user.uid){
-                        console.log('member');
+                       // console.log('member');
                         
                         groups.push(
                             { id: key, name: dataArray[i].name, key: key.toString()}
@@ -58,7 +58,9 @@ export default function Groups(){
                 }
                 setGroupLoading(false);
                 
-            }catch(error){ console.log(error) }
+            }catch(error){ 
+              //  console.log(error) 
+            }
         })
     }
 
@@ -87,7 +89,24 @@ export default function Groups(){
                 'Please full out the form and try again'
             );
         }else{
-            
+            await firebase.database().ref(`Groups`).on('value', (snapshot) => {
+                const data = snapshot.val();
+                try{
+                   const dataArray = Object.values(data);
+
+                   for(let i = 0; i < dataArray.length; i++){
+                       const members = dataArray[i].Members;
+                       const memberArray = Object.values(members);
+                       const groupID = dataArray[i].groupID;
+                       const groupPassword = dataArray[i].password;
+                       console.log(dataArray[i].groupID);
+                   }
+               
+                }
+                catch(error){ 
+                  //  console.log(error) 
+                }
+            })
         }
     
     }
@@ -104,6 +123,7 @@ export default function Groups(){
            await firebase.database().ref(`Groups/${groupID}`).set({
                name: groupName,
                password: groupPassword,
+               groupID: groupID
            }).then(() => {
 
              const currDate = new Date();
@@ -151,11 +171,17 @@ export default function Groups(){
                     <View style={styles.wrapper}>
                        <TextInput
                          style={global.textInput}
-                         label="Group ID"/>
+                         value={joinID}
+                         label="Group ID"
+                         onSubmitEditing={submitJoinGroup}
+                         onChangeText={(text) => setjoinID(text)}/>
                        <TextInput
                          style={global.textInput}
+                         value={joinPassword}
                          secureTextEntry={true}
-                         label="Group Password"/>
+                         label="Group Password"
+                         onSubmitEditing={submitJoinGroup}
+                         onChangeText={(text) => setjoinPassword(text)}/>
     
                        <Button
                          style={global.accessBtn}
