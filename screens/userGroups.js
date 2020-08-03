@@ -24,6 +24,9 @@ export default function Groups(){
     const [groupName, setGroupName] = useState('');
     const [groupPassword, setGroupPassword] = useState('');
 
+    const [joinID, setjoinID] = useState('');
+    const [joinPassword, setjoinPassword] = useState('');
+
     let groups = [
        
     ];
@@ -78,6 +81,14 @@ export default function Groups(){
     }
 
     const submitJoinGroup = async () => {
+        if(joinID == '' || joinPassword == ''){
+            Alert.alert(
+                'Error',
+                'Please full out the form and try again'
+            );
+        }else{
+            
+        }
     
     }
 
