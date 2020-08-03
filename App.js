@@ -13,8 +13,9 @@ import Welcome from './screens/homeScreen';
 import loginScreen from './screens/loginScreen';
 import signupScreen from './screens/signupScreen';
 
-
 import userGroups from './screens/userGroups';
+import addGroups from './screens/addGroup';
+import joinGroup from './screens/joinGroup';
 
 import userScreen from './screens/userScreen';
 
@@ -105,6 +106,20 @@ export default function Main(){
                                 </Button>
                               )
                             })}/>
+
+                          <Stack.Screen 
+                            name="AddGroup" 
+                            component={addGroups}
+                            options={{
+                              title: 'Create Group'
+                            }}/>
+
+                          <Stack.Screen 
+                            name="JoinGroup" 
+                            component={joinGroup}
+                            options={{
+                              title: 'Joing Group'
+                            }}/>
 
 
                           <Stack.Screen 
