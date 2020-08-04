@@ -54,10 +54,10 @@ export default function JobScreen({ navigation }){
             </View>
             <FAB
                 style={global.fab}
-                label="Create Event"
+                label="Create Job"
                 color="#fff"
                 icon="plus"
-                onPress={() => navigation.navigate('CreateEvent')}/>
+                onPress={() => navigation.navigate('CreateJob')}/>
         </View>
     )
 }

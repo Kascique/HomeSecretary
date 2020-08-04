@@ -12,7 +12,7 @@ export default function ToDoScreen(){
     const [newToDo, setNewToDo] = useState('')
 
     const toDo = [
-       { title: 'Title', key: 1}
+       { title: 'Wash the dishes', key: 1}
     ];
 
     const openModal = () => {

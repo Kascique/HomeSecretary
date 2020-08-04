@@ -8,7 +8,7 @@ import * as firebase from 'firebase';
 
 import global from '../styles/global';
 
-export default function Login(){
+export default function Login({ navigation }){
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState(false);
     const [emailHelper, setEmailHelper] = useState('');
@@ -137,6 +137,8 @@ export default function Login(){
                         onPress={loginSubmit}>
                         <Text style={global.accessBtnTxt}>Log In</Text>
                     </Button>
+
+                    <Button style={{marginTop: 20}} onPress={()=> navigation.navigate('ForgotPassword')}>Forgot password ?</Button>
                 </View>
              </View>
              </ScrollView>

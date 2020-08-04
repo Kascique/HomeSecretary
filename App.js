@@ -11,6 +11,9 @@ import SplashScreen from './screens/splashScreen';
 import Welcome from './screens/homeScreen';
 
 import loginScreen from './screens/loginScreen';
+
+import forgotPassword from './screens/forgotPassword';
+
 import signupScreen from './screens/signupScreen';
 
 import userGroups from './screens/userGroups';
@@ -22,6 +25,8 @@ import userGroup from './screens/userGroup';
 import userScreen from './screens/userScreen';
 
 import createEvent from './screens/Tabs/CreateEvent';
+
+import CreateJob from './screens/Tabs/CreateJob';
 
 //initialize firebase
 const firebaseconfig = {
@@ -151,6 +156,12 @@ export default function Main(){
                               title: 'Create Event'
                             }}/>
 
+                          <Stack.Screen 
+                            name="CreateJob" 
+                            component={CreateJob}
+                            options={{
+                              title: 'Create Job'
+                            }}/>
 
 
                           <Stack.Screen 
@@ -184,6 +195,11 @@ export default function Main(){
                           <Stack.Screen 
                             name="Login" 
                             component={loginScreen}
+                            options={headerOptions}/>
+                          
+                          <Stack.Screen 
+                            name="ForgotPassword" 
+                            component={forgotPassword}
                             options={headerOptions}/>
 
                           <Stack.Screen 
