@@ -17,7 +17,11 @@ import userGroups from './screens/userGroups';
 import addGroups from './screens/addGroup';
 import joinGroup from './screens/joinGroup';
 
+import userGroup from './screens/userGroup';
+
 import userScreen from './screens/userScreen';
+
+import createEvent from './screens/Tabs/CreateEvent';
 
 //initialize firebase
 const firebaseconfig = {
@@ -120,6 +124,33 @@ export default function Main(){
                             options={{
                               title: 'Joing Group'
                             }}/>
+
+                          <Stack.Screen 
+                            name="Group" 
+                            component={userGroup}
+                            options={({ navigation, route }) => ({
+                              title: route.params.name,                              
+                              headerRight: () => (
+                                <Button
+                                  color="red"
+                                  onPress={() => {
+                                     firebase.auth().signOut()
+                                             .then(() => {
+                                               navigation.navigate('Splash');
+                                             });
+                                  }}>
+                                  Logout
+                                </Button>
+                              )
+                            })}/>
+
+                          <Stack.Screen 
+                            name="CreateEvent" 
+                            component={createEvent}
+                            options={{
+                              title: 'Create Event'
+                            }}/>
+
 
 
                           <Stack.Screen 

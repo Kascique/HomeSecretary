@@ -71,5 +71,12 @@ export default StyleSheet.create({
     },
     loadingText: {
         color: '#fff'
+    },
+    fab: {
+        backgroundColor: "#4ECDC4",
+        position: 'absolute',
+        alignSelf: 'center',
+        margin: 16,
+        bottom: 10,
     }
 })

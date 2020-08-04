@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, ActivityIndicator, Modal, SafeAreaView, Alert, FlatList, TouchableWithoutFeedback } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, ActivityIndicator, Modal, SafeAreaView, Alert, FlatList, TouchableWithoutFeedback, Group } from 'react-native';
 import { Appbar, FAB, TextInput, Button, Card, Title } from 'react-native-paper';
 
 import * as firebase from 'firebase';
@@ -16,10 +16,14 @@ export default function Groups({ navigation }){
         }
     });
 
-    const [groupLoading, setGroupLoading] = useState(true);
+    const [groupLoading, setGroupLoading] = useState(false);
 
     let groups = [
-       
+             {
+              "id": 0,
+              "key": 0,
+              "name": "Default Group",
+            },
     ];
 
     const getGroups = async () => {
@@ -30,10 +34,9 @@ export default function Groups({ navigation }){
                 console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
                 console.log('data is null');
             }else{
-                
                 try{
                     const dataArray = Object.values(data);
-    
+                        
                     for(let i = 0; i < dataArray.length; i++){
                         const members = dataArray[i].Members;
                         const memberArray = Object.values(members);
@@ -46,20 +49,25 @@ export default function Groups({ navigation }){
                                console.log('member');
                                groups.push(
                                  { id: key, name: dataArray[i].name, key: key}
-                               )
+                               );
                            }
+                           console.log('###########################################################');
+                           console.log(groups);
                         }
-
                     }
-                    setGroupLoading(false);
+
                 }catch(error){ 
                    // console.log('###########################################################');
                     console.log(error);
                 }
+               //(false);
             }
         });
     }
-    getGroups();
+
+    useEffect(() => {
+       getGroups();
+    });
 
     return(
         <View style={global.wrapper}>
@@ -67,9 +75,10 @@ export default function Groups({ navigation }){
             <View style={global.container}>
                  <Button
                      style={{...global.accessBtn, ...{alignSelf: 'center'}}}
-                     onPress={() => navigation.navigate('JoinGroup')}>
+                     onPress={() => {navigation.navigate('JoinGroup')}}>
                     <Text style={global.accessBtnTxt}>Join New Group</Text>
                  </Button>
+                 
                 {
                     groupLoading
                     ? groups 
@@ -78,7 +87,7 @@ export default function Groups({ navigation }){
                     : <FlatList
                         data={groups}
                         renderItem={({ item }) => (
-                            <TouchableWithoutFeedback onPress={() => console.log('card')}>
+                            <TouchableWithoutFeedback onPress={() => navigation.navigate('Group', { groupID: item.id, name: item.name})}>
                                 <Card style={styles.groupCon}>
                                     <Card.Title title={item.name}/>
                                     <Card.Content>
@@ -88,13 +97,14 @@ export default function Groups({ navigation }){
                             </TouchableWithoutFeedback>
                         ) }/>
                 }
+
             </View>
             <FAB
               style={styles.fab}
               label="Create Group"
               color="#fff"
               icon="plus"
-              onPress={() => navigation.navigate('AddGroup') }/>
+              onPress={() => { navigation.navigate('AddGroup') } }/>
         </View>
     )
 }
