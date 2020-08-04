@@ -1,16 +1,37 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, ActivityIndicator, FlatList } from 'react-native';
-import { Card, Paragraph, Button, ProgressBar, Colors, Title, FAB } from 'react-native-paper';
+import { Card, Paragraph, Button, ProgressBar, Colors, Title, FAB, Chip } from 'react-native-paper';
 
 import * as firebase from 'firebase';
 import global from '../../styles/global';
 
 export default function EventScreen({ navigation }){
     const events = [
-        { title: 'Welcome', assigned: 'Kascique', details: 'Nothing much', progress: .4, key: 1},
-        { title: 'Welcome', assigned: 'Kascique', details: 'Nothing much', progress: .4, key: 2}
+        { title: 'Anna Graduation', date: '11 April', type: 'Graduation', details: 'Anna graduation from high school', key: 0},
     ];
     const [eventLoading, seteventLoading] = useState(false);
+
+    const getEvents = async () => {
+        await firebase.database().ref('Events').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if(data == null){
+                console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+                console.log('data is null');  
+            }else{
+                try{
+                    const dataArray = Object.values(data);
+                    // console.log(dataArray[0].date);
+                    for(let i = 0; i < dataArray.length; i++){
+                        events.push(
+                            { title: dataArray[i].title, date: dataArray[i].date, type: dataArray[i].type,  details: dataArray[i].desc, key: i+1},
+                        )
+                    }
+                }catch(error){ console.log(error) }
+            }
+        })
+    }
+
+    getEvents();
 
     return(
         <View style={global.wrapper}>
@@ -23,7 +44,7 @@ export default function EventScreen({ navigation }){
                         data={events}
                         renderItem={({ item }) => (
                                 <Card style={styles.container}>
-                                    <Card.Title title={item.title} subtitle={'Created By '+item.assigned} />
+                                    <Card.Title title={item.title} subtitle={'Event Type '+item.type+', date '+item.date} />
                                     <Card.Content>
                                         <Paragraph>{ item.details }</Paragraph>
                                     </Card.Content>
@@ -33,7 +54,7 @@ export default function EventScreen({ navigation }){
             </View>
             <FAB
                 style={global.fab}
-                label="Create Group"
+                label="Create Event"
                 color="#fff"
                 icon="plus"
                 onPress={() => navigation.navigate('CreateEvent')}/>
