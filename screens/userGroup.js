@@ -11,22 +11,8 @@ import global from '../styles/global';
 import EventScreen from './Tabs/EventScreen';
 import FavouriteScreen from './Tabs/favouriteScreen';
 
-
-function ToDoScreen(){
-    return(
-        <View style={global.wrapper}>
-            <Text>Todo Screen</Text>
-        </View>
-    )
-}
-
-function JobScreen(){
-    return(
-        <View style={global.wrapper}>
-            <Text>Jobs Screen</Text>
-        </View>
-    )
-}
+import ToDoScreen from './Tabs/ToDoScreen';
+import JobScreen from './Tabs/JobScreen';
 
 export default function userGroup({ navigation }){
     const Tab = createMaterialBottomTabNavigator();
