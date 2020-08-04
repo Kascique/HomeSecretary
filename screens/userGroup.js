@@ -9,15 +9,8 @@ import * as firebase from 'firebase';
 import global from '../styles/global';
 
 import EventScreen from './Tabs/EventScreen';
+import FavouriteScreen from './Tabs/favouriteScreen';
 
-
-function FavouriteScreen(){
-    return(
-        <View style={global.wrapper}>
-            <Text>Favourite Screen</Text>
-        </View>
-    )
-}
 
 function ToDoScreen(){
     return(
