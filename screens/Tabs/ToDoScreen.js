@@ -11,9 +11,9 @@ export default function ToDoScreen(){
 
     const [newToDo, setNewToDo] = useState('')
 
-    const toDo = [
-       { title: 'Wash the dishes', key: 1}
-    ];
+    const [toDo, settoDo] = useState([
+        { title: 'Wash the dishes', key: 1}
+     ]);
 
     const openModal = () => {
         setisModalVisiable(true);
@@ -31,9 +31,14 @@ export default function ToDoScreen(){
             );
         }else{
             var newID = new Date().getUTCMilliseconds();
-            toDo.push(
+            settoDo([
+                ...toDo,
                 { title: newToDo, key: newID}
-            );
+            ]);
+            
+            // toDo.push(
+            //     { title: newToDo, key: newID}
+            // );
             Alert.alert(
                 'Success',
                 'New to do have been posted successfully'
