@@ -16,6 +16,10 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "android": {
+       "package": "com.homesecretary.themastercoder",
+       "versionCode": 1
+    },
     "ios": {
       "supportsTablet": true
     },

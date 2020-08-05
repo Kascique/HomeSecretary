@@ -3,7 +3,6 @@ import { View, StyleSheet, Text, SafeAreaView, Image, ScrollView, Keyboard, Aler
 import { TextInput, HelperText, Button } from 'react-native-paper';
 import Spinner from 'react-native-loading-spinner-overlay';
 
-
 import * as firebase from 'firebase';
 
 import global from '../styles/global';
@@ -69,11 +68,17 @@ export default function Login({ navigation }){
         }else{
             setLoading(true);
             if(attempts >= 3 ){
-                setLoginDisabled(true);
+                // setLoginDisabled(true);
                 alert('User login have been disabled for 10 minutes');
-                setTimeout(() => {
-                   setLoginDisabled(false);
-                }, 1000);
+                setLoadingMsg('Disabled');
+                setAttempts(1);
+
+                setTimeout(function() {
+                    setLoading(false);
+                    setLoadingMsg('Loading...');
+                //    setLoginDisabled(false);
+                }, 20000);
+                return;
             }
             try{
                let response = await firebase.auth().signInWithEmailAndPassword(email, password)

@@ -40,18 +40,6 @@ export default function FavouriteScreen(){
                             // onSubmitEditing={submitNewToD}
                             // onChangeText={(newToDo) => setNewToDo(newToDo)}
                             />
-                        {/* <MapPicker
-                            initialCoordinate={{
-                                latitude: defaultPosition[0],
-                                longitude: defaultPosition[1],
-                            }}
-                            buttonText={'Save Location'}
-                            style={styles.mapPickerStyle}
-                            buttonStyle={styles.btn}
-                            textStyle={{fontSize: 18}}
-                            onLocationSelect={({latitude, longitude}) => {
-                               console.log(latitude+' '+longitude)
-                            }}/> */}
 
                         <Button 
                             style={global.accessBtn}
