@@ -20,6 +20,10 @@ export default function Login({ navigation }){
     const [loading, setLoading] = useState(false);
     const [loadingMsg, setLoadingMsg] = useState('Loading...');
 
+    const [attempts, setAttempts] = useState(1);
+
+    const [loginDisabled, setLoginDisabled] = useState(false);
+
     const validateEmail = (value) => {
         setEmail(value);
         if(value == ""){
@@ -64,6 +68,13 @@ export default function Login({ navigation }){
             )
         }else{
             setLoading(true);
+            if(attempts >= 3 ){
+                setLoginDisabled(true);
+                alert('User login have been disabled for 10 minutes');
+                setTimeout(() => {
+                   setLoginDisabled(false);
+                }, 1000);
+            }
             try{
                let response = await firebase.auth().signInWithEmailAndPassword(email, password)
                    .then(function(user){
@@ -79,6 +90,8 @@ export default function Login({ navigation }){
                         {
                             text: 'OK',
                             onPress: () => {
+                                setAttempts(attempts+1);
+                                console.log(attempts);
                                 setLoading(false);
                             }
                         }
@@ -134,6 +147,7 @@ export default function Login({ navigation }){
                     <Button
                         style={global.accessBtn}
                         mode="contained"
+                        disabled={true}
                         onPress={loginSubmit}>
                         <Text style={global.accessBtnTxt}>Log In</Text>
                     </Button>

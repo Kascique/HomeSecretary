@@ -19,6 +19,7 @@
     "react-dom": "~16.11.0",
     "react-location-picker": "^1.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
+    "react-native-add-calendar-event": "^3.0.2",
     "react-native-calendars": "^1.301.0",
     "react-native-gesture-handler": "~1.6.0",
     "react-native-loading-spinner-overlay": "^1.1.0",

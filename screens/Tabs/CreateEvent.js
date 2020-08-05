@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Alert, ActivityIndicator } from 'react-native';
-import { TextInput, Button } from 'react-native-paper';
+import { StyleSheet, View, Text, Alert, ActivityIndicator, TouchableWithoutFeedback } from 'react-native';
+import { TextInput, Button, Checkbox, Subheading } from 'react-native-paper';
 
 import * as firebase from 'firebase';
 import global from '../../styles/global';
@@ -15,6 +15,10 @@ export default function CreateEvent(){
             setUser(u);
         }
     });
+
+    const [reoccurring , setReoccurring ] = useState(false);
+    const [addToCalandar , setAddToCalandar ] = useState(false);
+
 
     const [eventTitle, setEventTitle] = useState('');
     const [eventDesc, setEventDesc] = useState('');
@@ -89,6 +93,16 @@ export default function CreateEvent(){
                         onChangeText={(text) => {setEventDesc(text)}}
                         onSubmitEditing={submitNewEvent}
                         label="More Details"/>
+                        
+                    <TouchableWithoutFeedback onPress={()=>
+                        { setReoccurring(reoccurring ? false : true)}}>
+                        <View style={{...global.checkContainer, ...{backgroundColor: '#e8e8e8', borderRadius: 10, paddingRight: 10 }}}>
+                            <Checkbox
+                                status={reoccurring ? 'checked' : 'unchecked'}
+                                onPress={()=>{ setReoccurring(reoccurring ? false : true)}}/>
+                            <Subheading>Reoccurring Event</Subheading>
+                        </View>
+                    </TouchableWithoutFeedback>
 
                     <Button
                         style={global.accessBtn}

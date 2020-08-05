@@ -7,7 +7,8 @@ import global from '../../styles/global';
 
 export default function JobScreen({ navigation }){
     const events = [
-        { title: 'Water plants', date: '11 April', assigned: 'Kascique', details: 'Water the plants in the garden', key: 0},
+        { title: 'Water plants', date: '11 April', assigned: 'Anna', details: 'Water the plants in the garden', key: 0},
+        { title: 'Grocery listening', date: '12 August', assigned: 'Anyone', details: 'Bread, Milk, Meat, and eggs', key: 1},
     ];
     const [eventLoading, seteventLoading] = useState(false);
 
@@ -31,7 +32,7 @@ export default function JobScreen({ navigation }){
         })
     }
 
-    getEvents();
+   // getEvents();
 
     return(
         <View style={global.wrapper}>

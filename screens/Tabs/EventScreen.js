@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, ActivityIndicator, FlatList } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, FlatList, Linking } from 'react-native';
 import { Card, Paragraph, Button, ProgressBar, Colors, Title, FAB, Chip } from 'react-native-paper';
+import * as AddCalendarEvent from 'react-native-add-calendar-event';
 
 import * as firebase from 'firebase';
 import global from '../../styles/global';
@@ -9,7 +10,17 @@ export default function EventScreen({ navigation }){
     const events = [
         { title: 'Anna Graduation', date: '11 April', type: 'Graduation', details: 'Anna graduation from high school', key: 0},
     ];
+
+
     const [eventLoading, seteventLoading] = useState(false);
+
+    const addToCalandar = () => {
+        if(Platform.OS === 'ios') {
+            Linking.openURL('calshow:');
+          } else if(Platform.OS === 'android') { 
+            Linking.openURL('content://com.android.calendar/time/');
+          }
+    }
 
     const getEvents = async () => {
         await firebase.database().ref('Events').on('value', (snapshot) => {
@@ -48,6 +59,9 @@ export default function EventScreen({ navigation }){
                                     <Card.Content>
                                         <Paragraph>{ item.details }</Paragraph>
                                     </Card.Content>
+                                    <Card.Actions>
+                                        <Button onPress={() => addToCalandar()}>Add to Calandar</Button>
+                                    </Card.Actions>
                                 </Card>
                         )}/>
                 }
