@@ -35,17 +35,21 @@ export default function ToDoScreen(){
                 ...toDo,
                 { title: newToDo, key: newID}
             ]);
-            
-            // toDo.push(
-            //     { title: newToDo, key: newID}
-            // );
+
             Alert.alert(
                 'Success',
                 'New to do have been posted successfully'
             );
             setNewToDo('');
-            console.log(toDo);
+            // console.log(toDo);
         }
+    }
+
+    const deleteToDo = (id) => {
+      for(let i = 0; i < toDo.length; i++){
+        let list = toDo.splice(i, 1);
+        console.log(list);
+      }
     }
 
     return(
@@ -84,7 +88,7 @@ export default function ToDoScreen(){
                             <IconButton 
                                 icon="close"
                                 size={25}
-                                // onPress={() => deleteToDo(item.key)}
+                                onPress={() => deleteToDo(item.key)}
                                 />
                         </View>
                   )}/>

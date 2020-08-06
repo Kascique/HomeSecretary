@@ -152,7 +152,6 @@ export default function Login({ navigation }){
                     <Button
                         style={global.accessBtn}
                         mode="contained"
-                        disabled={true}
                         onPress={loginSubmit}>
                         <Text style={global.accessBtnTxt}>Log In</Text>
                     </Button>

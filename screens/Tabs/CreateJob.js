@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Alert, ActivityIndicator } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 import * as firebase from 'firebase';
 import global from '../../styles/global';
@@ -16,12 +17,30 @@ export default function CreateJob(){
         }
     });
 
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+
     const [eventTitle, setEventTitle] = useState('');
     const [eventDesc, setEventDesc] = useState('');
     const [eventType, setEventType] = useState('');
     const [eventDate, setEventDate] = useState('');
 
     const [createEventLoading, setCreateEventLoading] = useState(false);
+
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+      };
+     
+      const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+      };
+     
+      const handleConfirm = (date) => {
+        setEventDate(date.toString());
+        hideDatePicker();
+      };
+
+
     const submitNewEvent = async () => {
       if(eventTitle == '' || eventDesc == '' || eventType == '' || eventDate == ''){
           Alert.alert(
@@ -57,6 +76,13 @@ export default function CreateJob(){
 
     return(
         <View style={global.wrapper}>
+            <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                onConfirm={handleConfirm}
+                onCancel={hideDatePicker}
+            />
+
            {
                createEventLoading
                ? <ActivityIndicator style={{alignSelf: 'center', marginTop: 30}} size="large"/>
@@ -73,22 +99,23 @@ export default function CreateJob(){
                         onChangeText={(text) => {setEventType(text)}}
                         onSubmitEditing={submitNewEvent}
                         label="Assigned To"/>
-
                     
                     <TextInput
                         style={global.textInput}
                         value={eventDate}
-                        onChangeText={(text) => {setEventDate(text)}}
-                        onSubmitEditing={submitNewEvent}
-                        label="Job description"/>
-
-                    <TextInput
-                        style={global.textInput}
-                        value={eventDesc}
-                        multiline={true}
+                        disabled={true}
                         onChangeText={(text) => {setEventDesc(text)}}
                         onSubmitEditing={submitNewEvent}
                         label="Date and Time"/>
+
+                    <Button onPress={showDatePicker}>Select Date</Button>
+  
+
+                    <TextInput
+                        style={global.textInput}
+                        multiline={true}
+                        label="Job description"/>
+                
 
                     <Button
                         style={global.accessBtn}

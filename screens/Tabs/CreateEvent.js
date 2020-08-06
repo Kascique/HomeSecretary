@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Alert, ActivityIndicator, TouchableWithoutFeedback } from 'react-native';
 import { TextInput, Button, Checkbox, Subheading } from 'react-native-paper';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 import * as firebase from 'firebase';
 import global from '../../styles/global';
 import styles from '../../styles/groupStyle';
-import { useSafeArea } from 'react-native-safe-area-context';
 
 export default function CreateEvent(){
     const [user, setUser] = useState('');
@@ -19,6 +19,7 @@ export default function CreateEvent(){
     const [reoccurring , setReoccurring ] = useState(false);
     const [addToCalandar , setAddToCalandar ] = useState(false);
 
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
     const [eventTitle, setEventTitle] = useState('');
     const [eventDesc, setEventDesc] = useState('');
@@ -26,6 +27,20 @@ export default function CreateEvent(){
     const [eventDate, setEventDate] = useState('');
 
     const [createEventLoading, setCreateEventLoading] = useState(false);
+
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+      };
+     
+      const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+      };
+     
+      const handleConfirm = (date) => {
+        setEventDate(date.toString());
+        hideDatePicker();
+      };
+
     const submitNewEvent = async () => {
       if(eventTitle == '' || eventDesc == '' || eventType == '' || eventDate == ''){
           Alert.alert(
@@ -61,6 +76,13 @@ export default function CreateEvent(){
 
     return(
         <View style={global.wrapper}>
+            <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                onConfirm={handleConfirm}
+                onCancel={hideDatePicker}
+            />
+
            {
                createEventLoading
                ? <ActivityIndicator style={{alignSelf: 'center', marginTop: 30}} size="large"/>
@@ -78,13 +100,13 @@ export default function CreateEvent(){
                         onSubmitEditing={submitNewEvent}
                         label="Event Type"/>
 
-                    
                     <TextInput
                         style={global.textInput}
                         value={eventDate}
-                        onChangeText={(text) => {setEventDate(text)}}
-                        onSubmitEditing={submitNewEvent}
+                        disabled={true}
                         label="Event Date"/>
+
+                    <Button onPress={showDatePicker}>Select Date</Button>
 
                     <TextInput
                         style={global.textInput}

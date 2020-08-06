@@ -50,6 +50,15 @@ export default function SignUp({ navigation }){
         }
       }
 
+      const checkPasswordStrength = () => {
+          console.log("running");
+        if(!password.match(/[0-9]+/) || !password.match(/[$@#&!]+/)){
+            alert('Your password is weak, you should add numbers and special characters to create a stronger password');
+        }else{
+            console.log("password is strong");
+        }
+      }
+
       const validatePassword = (value) => {
         setPassword(value);
         if(value == ''){
@@ -65,7 +74,6 @@ export default function SignUp({ navigation }){
         return re.test(String(email).toLowerCase());
     }
 
-
     const signupSubmit = async () => {
        Keyboard.dismiss();
        if(fullName == '' || email == '' || password == ''){
@@ -80,6 +88,7 @@ export default function SignUp({ navigation }){
           )
        }else{
           setLoading(true);
+          checkPasswordStrength();
           try{
             let response = await firebase.auth().createUserWithEmailAndPassword(email, password);
             const update = {

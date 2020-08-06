@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, SafeAreaView, FlatList, Modal, Dimensions } fro
 import { Appbar, TextInput, Card, Paragraph, Button, ProgressBar, Colors, Title, FAB, Chip } from 'react-native-paper';
 import MapView from 'react-native-maps';
 import MapPicker from "react-native-map-picker";
+import Geocoder from 'react-native-geocoding';
 
 import * as firebase from 'firebase';
 import global from '../../styles/global';
@@ -20,18 +21,36 @@ export default function FavouriteScreen(){
     const [markers, setmarkers] = useState([
         { title: 'Anna Shopping', desc: 'Anna favourite shopping location', lat: 13.1561864, lng: -61.2279621}
     ]);
+
+    const [geoLocation, setGeoLocation] = useState('');
       
     const [setBtn, setSetBtn] = useState('Confirm');
 
+    const getLocation = (lat, lng) => {
+        Geocoder.init("AIzaSyBaZG1lYsftssaMI1k-IFlFxJwbXvW-TEg");
+        Geocoder.from(lat, lng)
+                .then(json => {
+                    var addressComponent = json.results[0].address_components[0];
+                    setGeoLocation(addressComponent.short_name);
+                }).catch((error) => {
+                    //console.log("test #############################");
+                    console.warn(error);
+                });
+        return;
+    }
+
     const addLocation = (lat, lng) => {
-        if(mapTitle == '' || mapDesc == ''){
+        getLocation(lat, lng);
+        if(mapTitle == ''){
             alert('Please full out form');
             return;
         }else{
             setmarkers([...markers,                 
-                { title: mapTitle, desc: mapDesc, lat: lat, lng: lng},  
+                { title: mapTitle, desc: geoLocation, lat: lat, lng: lng},  
             ]);
             alert('Location added successfully');
+            console.log(geoLocation);
+
             setMapTitle('');
             setMapDesc('');
             console.log(markers);
@@ -59,12 +78,12 @@ export default function FavouriteScreen(){
                                 value={mapTitle}
                                 onChangeText={(text) => setMapTitle(text)}
                                 />
-                            <TextInput 
+                            {/* <TextInput 
                                 style={{...global.textInput, ...styles.textInput}}
                                 label="Location Description"
                                 value={mapDesc}
                                 onChangeText={(text) => setMapDesc(text)}
-                                />
+                                /> */}
                         </View>
 
                         <MapPicker
@@ -124,7 +143,7 @@ const styles = StyleSheet.create({
     },
     locationDetails: {
        width: '95%',
-       height: 145,
+       height: 80,
        position: 'absolute',
        backgroundColor: '#fff',
        top: 10,

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, ActivityIndicator, FlatList, Linking } from 'react-native';
 import { Card, Paragraph, Button, ProgressBar, Colors, Title, FAB, Chip } from 'react-native-paper';
-import * as AddCalendarEvent from 'react-native-add-calendar-event';
 
 import * as firebase from 'firebase';
 import global from '../../styles/global';
